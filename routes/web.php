@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InstructeurController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/index', [InstructeurController::class, 'index'])->name('instructeur.index'); // Instructeur list
+
+Route::get('/gebruikteVoertuigen', [InstructeurController::class, 'gebruikteVoertuigen'])->name('instructeur.gebruikteVoertuigen'); // Gebruikte voertuigen list
