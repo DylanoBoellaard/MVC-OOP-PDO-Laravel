@@ -20,4 +20,8 @@ Route::get('/', function () {
 
 Route::get('/index', [InstructeurController::class, 'index'])->name('instructeur.index'); // Instructeur list
 
-Route::get('/gebruikteVoertuigen', [InstructeurController::class, 'gebruikteVoertuigen'])->name('instructeur.gebruikteVoertuigen'); // Gebruikte voertuigen list
+Route::get('/instructeur/gebruikteVoertuigen/{instructeur}', [InstructeurController::class, 'gebruikteVoertuigen'])->name('instructeur.gebruikteVoertuigen'); // Gebruikte voertuigen list
+
+Route::get('/instructeur/beschikbareVoertuigen/{instructeur}', [InstructeurController::class, 'beschikbareVoertuigen'])->name('instructeur.beschikbareVoertuigen'); // Gebruikte voertuigen list
+
+Route::get('/instructeur/wijzigenVoertuigen/', [InstructeurController::class, 'wijzigenVoertuigen'])->name('instructeur.wijzigenVoertuigen'); // Wijzigen voertuigen list

@@ -1,0 +1,19 @@
+body {
+    div#container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        div#instructeurList {
+            display: flex;
+            flex-direction: column;
+
+            p {
+                margin: 0.10rem;
+                span {
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

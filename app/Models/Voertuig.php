@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Instructeur extends Model
+class Voertuig extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'Id',
-        'Voornaam',
-        'Tussenvoegsel',
-        'Achternaam',
-        'Mobiel',
-        'DatumInDienst',
-        'AantalSterren'
+        'Kenteken',
+        'Type',
+        'Bouwjaar',
+        'Brandstof',
+        'TypeVoertuigId'
     ];
 }

@@ -31,7 +31,7 @@
                     <td>{{$instructeur->mobiel}}</td>
                     <td>{{$instructeur->datumInDienst}}</td>
                     <td>{{$instructeur->aantalSterren}}</td>
-                    <td><a href="{{route('instructeur.gebruikteVoertuigen', ['instructeur' => $instructeur])}}"><img src="/img/Car-logo-transparent.png" alt="voertuig.png"></a></td>
+                    <td><a href="{{route('instructeur.gebruikteVoertuigen', [$instructeur-> id])}}"><img src="/img/Car-logo-transparent.png" alt="voertuig.png"></a></td>
                     @endforeach
                 </tr>
             </tbody>
