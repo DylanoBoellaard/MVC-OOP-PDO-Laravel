@@ -179,7 +179,10 @@ class InstructeurController extends Controller
             ->orderBy('instructeurs.achternaam', 'asc')
             ->get();
 
-            
+            if ($voertuigGegevens->isEmpty()) {
+                $error = 'Er zijn geen voertuigen beschikbaar op dit moment.';
+                return view('instructeur.alleVoertuigen', ['voertuigGegevens' => $voertuigGegevens, 'error' => $error]);
+            }
 
         return view('instructeur.alleVoertuigen', ['voertuigGegevens' => $voertuigGegevens]);
     }

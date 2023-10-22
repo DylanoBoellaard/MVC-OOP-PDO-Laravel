@@ -1,0 +1,15 @@
+body {
+    div#container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        div#redirect {
+            p {
+                span {
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
