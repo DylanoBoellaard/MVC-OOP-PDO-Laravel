@@ -311,7 +311,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('instructeurs')
                 ->onDelete('cascade'); // Cascade = if record in referenced table gets deleted, all related records in the current table will also be deleted
-            $table->date('datumToekenning');
+            $table->date('datumToekenning')->default(now());
             $table->boolean('isActief')->default(true);
             $table->string('opmerkingen', 250)->nullable();
             $table->timestamps(6);
@@ -344,7 +344,7 @@ return new class extends Migration
                 'updated_at' => now()->micro(6),
             ],
             [
-                'voertuigsId' => 3,
+                'voertuigsId' => 4,
                 'instructeursId' => 4,
                 'datumToekenning' => '2022-08-01',
                 'opmerkingen' => null,
