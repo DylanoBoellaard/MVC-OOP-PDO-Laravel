@@ -95,14 +95,14 @@ class InstructeurController extends Controller
         if ($request->has('instructeur')) {
             $instructeurId = $request->input('instructeur');
             $voertuigId = $request->input('voertuig');
-        // Update the relationship with the instructor
+            // Update the relationship with the instructor
             $voertuigInstructeur = VoertuigInstructeur::updateOrCreate(
                 ['voertuigsId' => $voertuigId],
                 ['instructeursId' => $instructeurId]
             );
         }
 
-        // Redirect to a gebruikteVoertuigen page with a success message
+        // Redirect to the gebruikteVoertuigen page with a success message
         return redirect()->route('instructeur.gebruikteVoertuigen', ['instructeur' => $instructeur])
             ->with('success', 'Voertuig data succesvol geupdate.');
     }
@@ -142,8 +142,30 @@ class InstructeurController extends Controller
             'updated_at' => $updatedAt
         ));
 
-        // Redirect to a gebruikteVoertuigen page with a success message
+        // Redirect to the gebruikteVoertuigen page with a success message
         return redirect()->route('instructeur.gebruikteVoertuigen', ['instructeur' => $instructeur])
             ->with('success', 'Voertuig succesvol toegevoegd.');
+    }
+
+    // Method to unassign the selected vehicle from the selected instructor
+    public function delete(Instructeur $instructeur, Voertuig $voertuig)
+    {
+        // Check if the vehicle is assigned to the instructor
+        $voertuigInstructeur = VoertuigInstructeur::where('instructeursId', $instructeur->id)
+            ->where('voertuigsId', $voertuig->id)
+            ->first();
+
+        // If assigned, unassign the vehicle from the instructor
+        if ($voertuigInstructeur) {
+            $voertuigInstructeur->delete();
+
+            // Redirect back to the gebruikteVoertuigen page with a success message if successful
+            return redirect()->route('instructeur.gebruikteVoertuigen', ['instructeur' => $instructeur])
+                ->with('success', 'Voertuig is succesvol ontkoppeld van de instructeur.');
+        } else {
+            // If the vehicle isn't assigned, redirect back to the gebruikteVoertuigen page with an error message
+            return redirect()->route('instructeur.gebruikteVoertuigen', ['instructeur' => $instructeur])
+                ->with('error', 'Error, dit voertuig is niet toegewezen aan de instructeur.');
+        }
     }
 }

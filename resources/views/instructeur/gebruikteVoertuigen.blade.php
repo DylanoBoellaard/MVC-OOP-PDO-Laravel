@@ -16,6 +16,10 @@
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
+        @elseif (session('error'))
+        <div class="alert alert-error">
+            {{ session('error') }}
+        </div>
         @endif
 
         <!-- Instructeur naam & redirect links -->
@@ -37,6 +41,7 @@
                     <th>Brandstof</th>
                     <th>Rijbewijscategorie</th>
                     <th>Wijzigen</th>
+                    <th>Verwijderen</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +54,7 @@
                     <td>{{$voertuig->brandstof}}</td>
                     <td>{{$voertuig->rijbewijsCategorie}}</td>
                     <td><a href="{{route('instructeur.wijzigenVoertuigen', [$instructeurs->id, $voertuig->id])}}"><img src="/img/Edit-icon.png" alt="wijzigenVoertuig.png"></a></td>
+                    <td><a href="{{route('instructeur.delete', [$instructeurs->id, $voertuig->id])}}"><img src="/img/Delete-icon.png" alt="verwijderVoertuig.png"></a></td>
                     @endforeach
                 </tr>
             </tbody>

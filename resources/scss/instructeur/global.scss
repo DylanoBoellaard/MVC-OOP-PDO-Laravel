@@ -6,7 +6,12 @@ body {
     .alert {
         font-size: 25px;
         font-weight: bold;
+    }
+    .alert-success {
         color: darkgreen;
+    }
+    .alert-error {
+        color: darkred;
     }
     table {
         border: solid 1px black;
