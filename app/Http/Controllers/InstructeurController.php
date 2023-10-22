@@ -13,12 +13,17 @@ class InstructeurController extends Controller
 {
     public function index()
     {
+        $aantalInstructeurs = Instructeur::distinct()->count('id');
+
         $instructeurList = DB::table('instructeurs')
             ->select('id', 'voornaam', 'tussenvoegsel', 'achternaam', 'mobiel', 'datumInDienst', 'aantalSterren')
             ->orderBy('aantalSterren', 'desc')
             ->get();
 
-        return view('instructeur.index', ['instructeurList' => $instructeurList]);
+        return view('instructeur.index', [
+            'instructeurList' => $instructeurList,
+            'aantalInstructeurs' => $aantalInstructeurs,
+        ]);
     }
 
     // Method for showing vehicles assigned to instructor
@@ -85,9 +90,21 @@ class InstructeurController extends Controller
         // Save the changes to the database
         $voertuig->save();
 
-        // Update the relationship with the instructor
-        $voertuigInstructeur = VoertuigInstructeur::where('voertuigsId', $voertuig->id)
-            ->update(['instructeursId' => $validatedData['instructeur']]);
+        // // Update the relationship with the instructor       OLD CODE - Allow updating vehicle data, but not assign unassigned vehicle to instructor
+        // $voertuigInstructeur = VoertuigInstructeur::where('voertuigsId', $voertuig->id)
+        //     ->update(['instructeursId' => $validatedData['instructeur']]);
+
+        // Allow unassigned vehicle to update vehicle data and assign to selected instructor
+        // Check if the instructor has been changed in the form
+        if ($request->has('instructeur')) {
+            $instructeurId = $request->input('instructeur');
+            $voertuigId = $request->input('voertuig');
+            // Update the relationship with the instructor
+            $voertuigInstructeur = VoertuigInstructeur::updateOrCreate(
+                ['voertuigsId' => $voertuigId],
+                ['instructeursId' => $instructeurId]
+            );
+        }
 
         // Redirect to a success page or return a response
         return redirect()->route('instructeur.gebruikteVoertuigen', ['instructeur' => $instructeur])

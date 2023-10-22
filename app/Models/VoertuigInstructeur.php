@@ -13,7 +13,7 @@ class VoertuigInstructeur extends Model
 
     protected $fillable = [
         'id',
-        'voertuigId',
-        'instructeurId'
+        'voertuigsId',
+        'instructeursId',
     ];
 }

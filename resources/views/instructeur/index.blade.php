@@ -10,6 +10,7 @@
 <body>
     <div id="container">
         <h1>Instructeurs in dienst</h1>
+        <p><span>Aantal instructeurs: </span>{{$aantalInstructeurs}}</p>
         <table>
             <thead>
                 <tr>

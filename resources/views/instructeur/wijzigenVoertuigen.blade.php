@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wijzigen voertuigen</title>
-
     @vite(['resources/scss/instructeur/gebruikteVoertuigen.scss', 'resources/scss/instructeur/global.scss'])
 </head>
 
@@ -21,6 +19,7 @@
 
             <div id="formField">
                 <label for="instructeur">Instructeur:</label>
+                <input type="hidden" name="voertuig" value="{{ $voertuig->id }}"> <!-- Used to send vehicle ID to update method to assign unassigned vehicle to selected instructor -->
                 <select name="instructeur" id="instructeur">
                     @foreach($instructeurList as $instructeurOption)
                         <option value="{{ $instructeurOption->id }}" {{ $instructeurOption->id == $instructeurs->id ? 'selected' : '' }}>{{ $instructeurOption->voornaam }} {{ $instructeurOption->achternaam }}</option>
@@ -39,12 +38,12 @@
 
             <div id="formField"> <!-- NOT CORRECT VEHICLE -->
                 <label for="type">Type:</label>
-                <input type="text" name="type" id="type" value="{{$voertuig->type}}">
+                    <input type="text" name="type" id="type" value="{{$voertuig->type}}">
             </div>
 
             <div id="formField">
                 <label for="bouwjaar">Bouwjaar:</label>
-                <input type="text" name="bouwjaar" id="bouwjaar" value="{{$voertuig->bouwjaar}}">
+                    <input type="text" name="bouwjaar" id="bouwjaar" value="{{$voertuig->bouwjaar}}">
             </div>
 
             <div id="formField">
@@ -71,5 +70,4 @@
         </form>
     </div>
 </body>
-
 </html>
