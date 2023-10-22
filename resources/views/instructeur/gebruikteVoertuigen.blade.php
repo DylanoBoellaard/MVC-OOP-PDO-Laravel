@@ -11,12 +11,19 @@
     <div id="container">
         <h1>Door instructeur gebruikte voertuigen</h1>
 
-        <div id="instructeurList">
-                <p><span>Naam:</span> {{$instructeurs->voornaam}} {{$instructeurs->tussenvoegsel}} {{$instructeurs->achternaam}}</p>
-                <p><span>Datum in dienst:</span> {{$instructeurs->datumInDienst}}</p>
-                <p><span>Aantal sterren:</span> {{$instructeurs->aantalSterren}}</p>
-            <a href="{{route('instructeur.beschikbareVoertuigen', [$instructeurs->id])}}">Toevoegen voertuig</a>
+        <!-- If statement to display the success message -->
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
 
+        <!-- Instructeur naam & redirect links -->
+        <div id="instructeurList">
+            <p><span>Naam:</span> {{$instructeurs->voornaam}} {{$instructeurs->tussenvoegsel}} {{$instructeurs->achternaam}}</p>
+            <p><span>Datum in dienst:</span> {{$instructeurs->datumInDienst}}</p>
+            <p><span>Aantal sterren:</span> {{$instructeurs->aantalSterren}}</p>
+            <a href="{{route('instructeur.beschikbareVoertuigen', [$instructeurs->id])}}">Toevoegen voertuig</a>
             <a href="{{route('instructeur.index')}}">Terug naar instructeur lijst</a>
         </div>
 
@@ -33,7 +40,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($voertuigGegevens as $voertuig)
+                @foreach($voertuigGegevens as $voertuig) <!-- Foreach Loop to display all vehicle details -->
                 <tr>
                     <td>{{$voertuig->typeVoertuig}}</td>
                     <td>{{$voertuig->type}}</td>
@@ -48,5 +55,4 @@
         </table>
     </div>
 </body>
-
 </html>

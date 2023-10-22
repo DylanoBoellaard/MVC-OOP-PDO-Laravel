@@ -6,6 +6,6 @@
     <title>Wijzigen gegevens</title>
 </head>
 <body>
-    <h1>update page</h1>
+    <!-- Empty page, is used to prompt controller to update vehicle values -->
 </body>
 </html>

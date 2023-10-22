@@ -14,18 +14,25 @@ use App\Http\Controllers\InstructeurController;
 |
 */
 
+// Default homepage
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/index', [InstructeurController::class, 'index'])->name('instructeur.index'); // Instructeur list
+// Instructeur namen lijst
+Route::get('/index', [InstructeurController::class, 'index'])->name('instructeur.index');
 
-Route::get('/instructeur/gebruikteVoertuigen/{instructeur}', [InstructeurController::class, 'gebruikteVoertuigen'])->name('instructeur.gebruikteVoertuigen'); // already used & assigned vehicles list page
+// already used & assigned vehicles list page
+Route::get('/instructeur/gebruikteVoertuigen/{instructeur}', [InstructeurController::class, 'gebruikteVoertuigen'])->name('instructeur.gebruikteVoertuigen');
 
-Route::get('/instructeur/beschikbareVoertuigen/{instructeur}', [InstructeurController::class, 'beschikbareVoertuigen'])->name('instructeur.beschikbareVoertuigen'); // available, unassigned voertuigen list page
+// available, unassigned voertuigen list page
+Route::get('/instructeur/beschikbareVoertuigen/{instructeur}', [InstructeurController::class, 'beschikbareVoertuigen'])->name('instructeur.beschikbareVoertuigen');
 
-Route::get('/instruceur/addVehicle.{instructeur}/{voertuig}', [InstructeurController::class, 'addVehicle'])->name('instructeur.addVehicle'); // Add unassigned vehicle to instructor page
+// Page to actually allow adding selected unassigned vehicle to selected instructor
+Route::get('/instruceur/addVehicle.{instructeur}/{voertuig}', [InstructeurController::class, 'addVehicle'])->name('instructeur.addVehicle');
 
-Route::get('/instructeur/wijzigenVoertuigen/{instructeur}/{voertuigGegevens}', [InstructeurController::class, 'wijzigenVoertuigen'])->name('instructeur.wijzigenVoertuigen'); // edit vehicle data list page
+// Page to edit vehicle details
+Route::get('/instructeur/wijzigenVoertuigen/{instructeur}/{voertuigGegevens}', [InstructeurController::class, 'wijzigenVoertuigen'])->name('instructeur.wijzigenVoertuigen');
 
-Route::put('/instructeur/update/{instructeur}/{voertuig}', [InstructeurController::class, 'update'])->name('instructeur.update'); // Update vehicle data page
+// Page to actually allow updating the selected vehicle details
+Route::put('/instructeur/update/{instructeur}/{voertuig}', [InstructeurController::class, 'update'])->name('instructeur.update');

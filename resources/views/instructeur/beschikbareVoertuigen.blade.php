@@ -11,10 +11,11 @@
     <div id="container">
         <h1>Alle beschikbare voertuigen</h1>
 
+        <!-- Instructeur naam & redirect links -->
         <div id="instructeurList">
-                <p><span>Naam:</span> {{$instructeurs->voornaam}} {{$instructeurs->tussenvoegsel}} {{$instructeurs->achternaam}}</p>
-                <p><span>Datum in dienst:</span> {{$instructeurs->datumInDienst}}</p>
-                <p><span>Aantal sterren:</span> {{$instructeurs->aantalSterren}}</p>
+            <p><span>Naam:</span> {{$instructeurs->voornaam}} {{$instructeurs->tussenvoegsel}} {{$instructeurs->achternaam}}</p>
+            <p><span>Datum in dienst:</span> {{$instructeurs->datumInDienst}}</p>
+            <p><span>Aantal sterren:</span> {{$instructeurs->aantalSterren}}</p>
 
             <a href="{{route('instructeur.index')}}">Terug naar instructeur lijst</a>
         </div>
@@ -33,7 +34,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($unassignedVehicles as $voertuig)
+                @foreach($unassignedVehicles as $voertuig) <!-- Foreach Loop to display all vehicle details -->
                 <tr>
                     <td>{{$voertuig->typeVoertuig}}</td>
                     <td>{{$voertuig->type}}</td>
@@ -49,5 +50,4 @@
         </table>
     </div>
 </body>
-
 </html>

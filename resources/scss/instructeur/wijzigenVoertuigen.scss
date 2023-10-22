@@ -1,0 +1,18 @@
+body {
+    div#container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    form {
+        div.formField {
+            label {
+                font-weight: bold;
+            }
+            input#bouwjaar {
+                cursor: not-allowed;
+            }
+        }
+    }
+}

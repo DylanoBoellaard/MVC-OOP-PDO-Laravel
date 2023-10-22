@@ -26,7 +26,7 @@ class InstructeurController extends Controller
         ]);
     }
 
-    // Method for showing vehicles assigned to instructor
+    // Method for showing vehicles already assigned to instructor
     public function gebruikteVoertuigen(Instructeur $instructeur)
     {
         $instructeurId = $instructeur->id;
@@ -90,27 +90,24 @@ class InstructeurController extends Controller
         // Save the changes to the database
         $voertuig->save();
 
-        // // Update the relationship with the instructor       OLD CODE - Allow updating vehicle data, but not assign unassigned vehicle to instructor
-        // $voertuigInstructeur = VoertuigInstructeur::where('voertuigsId', $voertuig->id)
-        //     ->update(['instructeursId' => $validatedData['instructeur']]);
-
         // Allow unassigned vehicle to update vehicle data and assign to selected instructor
         // Check if the instructor has been changed in the form
         if ($request->has('instructeur')) {
             $instructeurId = $request->input('instructeur');
             $voertuigId = $request->input('voertuig');
-            // Update the relationship with the instructor
+        // Update the relationship with the instructor
             $voertuigInstructeur = VoertuigInstructeur::updateOrCreate(
                 ['voertuigsId' => $voertuigId],
                 ['instructeursId' => $instructeurId]
             );
         }
 
-        // Redirect to a success page or return a response
+        // Redirect to a gebruikteVoertuigen page with a success message
         return redirect()->route('instructeur.gebruikteVoertuigen', ['instructeur' => $instructeur])
-            ->with('success', 'Vehicle data updated successfully.');
+            ->with('success', 'Voertuig data succesvol geupdate.');
     }
 
+    // Method for showing all non-assigned available vehicles on a page
     public function beschikbareVoertuigen(Instructeur $instructeur)
     {
         $unassignedVehicles = Voertuig::select('voertuigs.id', 'voertuigs.type', 'voertuigs.kenteken', 'voertuigs.bouwjaar', 'voertuigs.brandstof', 'typeVoertuigs.typeVoertuig', 'typeVoertuigs.rijbewijsCategorie')
@@ -126,14 +123,17 @@ class InstructeurController extends Controller
         ]);
     }
 
+    // Method to actually add the selected vehicle and instructor to the database
     public function addVehicle(Instructeur $instructeur, Voertuig $voertuig)
     {
+        // Variables
         $instructeurId = $instructeur->id;
         $voertuigId = $voertuig->id;
         $datumToekenning = date('y-m-d');
         $createdAt = date('y-m-d h:i:s');
         $updatedAt = date('y-m-d h:i:s');
 
+        // Insert to DB query
         $vehicleData = VoertuigInstructeur::insert(array(
             'voertuigsId' => $voertuigId,
             'instructeursId' => $instructeurId,
@@ -142,7 +142,7 @@ class InstructeurController extends Controller
             'updated_at' => $updatedAt
         ));
 
-        // Redirect to a success page or return a response
+        // Redirect to a gebruikteVoertuigen page with a success message
         return redirect()->route('instructeur.gebruikteVoertuigen', ['instructeur' => $instructeur])
             ->with('success', 'Voertuig succesvol toegevoegd.');
     }

@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instructeur list</title>
+    <title>Instructeur lijst</title>
 
     @vite(['resources/scss/instructeur/index.scss', 'resources/scss/instructeur/global.scss'])
 </head>
 <body>
     <div id="container">
         <h1>Instructeurs in dienst</h1>
-        <p><span>Aantal instructeurs: </span>{{$aantalInstructeurs}}</p>
+        <p><span>Aantal instructeurs: </span>{{$aantalInstructeurs}}</p> <!-- Show total amount of instructors -->
         <table>
             <thead>
                 <tr>
@@ -24,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($instructeurList as $instructeur)
+                @foreach($instructeurList as $instructeur) <!-- Foreach Loop to display all instructor details -->
                 <tr>
                     <td>{{$instructeur->voornaam}}</td>
                     <td>{{$instructeur->tussenvoegsel}}</td>
