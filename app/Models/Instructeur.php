@@ -10,12 +10,12 @@ class Instructeur extends Model
     use HasFactory;
 
     protected $fillable = [
-        'Id',
-        'Voornaam',
-        'Tussenvoegsel',
-        'Achternaam',
-        'Mobiel',
-        'DatumInDienst',
-        'AantalSterren'
+        'id',
+        'voornaam',
+        'tussenvoegsel',
+        'achternaam',
+        'mobiel',
+        'datumInDienst',
+        'aantalSterren'
     ];
 }

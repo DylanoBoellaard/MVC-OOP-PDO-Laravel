@@ -9,9 +9,11 @@ class VoertuigInstructeur extends Model
 {
     use HasFactory;
 
+    protected $table = 'voertuigInstructeurs';
+
     protected $fillable = [
-        'Id',
-        'VoertuigId',
-        'InstructeurId'
+        'id',
+        'voertuigId',
+        'instructeurId'
     ];
 }

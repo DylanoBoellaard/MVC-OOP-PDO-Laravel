@@ -344,7 +344,7 @@ return new class extends Migration
                 'updated_at' => now()->micro(6),
             ],
             [
-                'voertuigsId' => 3,
+                'voertuigsId' => 4,
                 'instructeursId' => 4,
                 'datumToekenning' => '2022-08-01',
                 'opmerkingen' => null,

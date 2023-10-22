@@ -10,11 +10,11 @@ class Voertuig extends Model
     use HasFactory;
 
     protected $fillable = [
-        'Id',
-        'Kenteken',
-        'Type',
-        'Bouwjaar',
-        'Brandstof',
-        'TypeVoertuigId'
+        'id',
+        'kenteken',
+        'type',
+        'bouwjaar',
+        'brandstof',
+        'typeVoertuigId'
     ];
 }

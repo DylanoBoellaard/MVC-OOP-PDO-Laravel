@@ -25,12 +25,69 @@ class InstructeurController extends Controller
     {
         $instructeurId = $instructeur->id;
 
-        $voertuigGegevens = Instructeur::join('voertuigInstructeurs', 'instructeurs.id', '=', 'voertuigInstructeurs.instructeursId')
-            ->join('voertuigs', 'voertuigInstructeurs.voertuigsId', '=', 'voertuigs.id')
-            ->join('typeVoertuigs', 'voertuigs.typeVoertuigsid', '=', 'typeVoertuigs.id')
-            ->where('instructeurs.id', '=', $instructeurId)
+        $voertuigGegevens = Voertuig::select('voertuigs.id', 'voertuigs.type', 'voertuigs.kenteken', 'voertuigs.bouwjaar', 'voertuigs.brandstof', 'typeVoertuigs.typeVoertuig', 'typeVoertuigs.rijbewijsCategorie')
+            ->join('voertuigInstructeurs', 'voertuigs.id', '=', 'voertuigInstructeurs.voertuigsId')
+            ->join('instructeurs', 'voertuigInstructeurs.instructeursId', '=', 'instructeurs.id')
+            ->join('typeVoertuigs', 'voertuigs.typeVoertuigsId', '=', 'typeVoertuigs.id')
+            ->where('instructeurs.id', $instructeurId)
             ->orderBy('typeVoertuigs.rijbewijsCategorie', 'asc')
             ->get();
+
         return view('instructeur.gebruikteVoertuigen', ['instructeurs' => $instructeur, 'voertuigGegevens' => $voertuigGegevens]);
+    }
+
+    public function wijzigenVoertuigen(Instructeur $instructeur, $voertuig)
+    {
+        $instructeurList = Instructeur::all();
+        $typeVoertuigList = TypeVoertuig::select('id', 'typeVoertuig')->get();
+
+        $voertuigGegevens = DB::table('voertuigs')
+            ->select('voertuigInstructeurs.*', 'voertuigs.id', 'voertuigs.type', 'voertuigs.kenteken', 'voertuigs.bouwjaar', 'voertuigs.brandstof', 'voertuigs.typeVoertuigsId', 'typeVoertuigs.rijbewijscategorie', 'typeVoertuigs.typeVoertuig')
+            ->leftJoin('voertuigInstructeurs', 'voertuigs.id', '=', 'voertuigInstructeurs.voertuigsId')
+            ->join('typeVoertuigs', 'voertuigs.typeVoertuigsId', '=', 'typeVoertuigs.id')
+            ->where('voertuigs.id', $voertuig)
+            ->get();
+
+        return view('instructeur.wijzigenVoertuigen', [
+            'instructeurs' => $instructeur,
+            'voertuigGegevens' => $voertuigGegevens,
+            'instructeurList' => $instructeurList,
+            'typeVoertuigList' => $typeVoertuigList,
+            'voertuigId' => $voertuig,
+        ]);
+    }
+
+    public function update(Request $request, Instructeur $instructeur, Voertuig $voertuig)
+    {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'instructeur' => 'required|exists:instructeurs,id',
+            'typeVoertuig' => 'required|exists:typeVoertuigs,id',
+            'type' => 'required',
+            'bouwjaar' => 'required|date',
+            'brandstof' => 'required|in:Diesel,Benzine,Elektrisch',
+            'kenteken' => 'required|max:50',
+        ]);
+
+        // Find the vehicle by its ID
+        $voertuig = Voertuig::findOrFail($voertuig->id);
+
+        // Update the vehicle data
+        $voertuig->type = $validatedData['type'];
+        $voertuig->bouwjaar = $validatedData['bouwjaar'];
+        $voertuig->brandstof = $validatedData['brandstof'];
+        $voertuig->kenteken = $validatedData['kenteken'];
+        $voertuig->typeVoertuigsId = $validatedData['typeVoertuig'];
+
+        // Save the changes to the database
+        $voertuig->save();
+
+        // Update the relationship with the instructor
+        $voertuigInstructeur = VoertuigInstructeur::where('voertuigsId', $voertuig->id)
+            ->update(['instructeursId' => $validatedData['instructeur']]);
+
+        // Redirect to a success page or return a response
+        return redirect()->route('instructeur.gebruikteVoertuigen', ['instructeur' => $instructeur])
+            ->with('success', 'Vehicle data updated successfully.');
     }
 }
