@@ -21,6 +21,7 @@ class InstructeurController extends Controller
         return view('instructeur.index', ['instructeurList' => $instructeurList]);
     }
 
+    // Method for showing vehicles assigned to instructor
     public function gebruikteVoertuigen(Instructeur $instructeur)
     {
         $instructeurId = $instructeur->id;
@@ -36,6 +37,7 @@ class InstructeurController extends Controller
         return view('instructeur.gebruikteVoertuigen', ['instructeurs' => $instructeur, 'voertuigGegevens' => $voertuigGegevens]);
     }
 
+    // Method for showing selected vehicle editing page
     public function wijzigenVoertuigen(Instructeur $instructeur, $voertuig)
     {
         $instructeurList = Instructeur::all();
@@ -57,6 +59,7 @@ class InstructeurController extends Controller
         ]);
     }
 
+    // Method for actually processing and updating the vehicle values
     public function update(Request $request, Instructeur $instructeur, Voertuig $voertuig)
     {
         // Validate the incoming request data
@@ -89,5 +92,41 @@ class InstructeurController extends Controller
         // Redirect to a success page or return a response
         return redirect()->route('instructeur.gebruikteVoertuigen', ['instructeur' => $instructeur])
             ->with('success', 'Vehicle data updated successfully.');
+    }
+
+    public function beschikbareVoertuigen(Instructeur $instructeur)
+    {
+        $unassignedVehicles = Voertuig::select('voertuigs.id', 'voertuigs.type', 'voertuigs.kenteken', 'voertuigs.bouwjaar', 'voertuigs.brandstof', 'typeVoertuigs.typeVoertuig', 'typeVoertuigs.rijbewijsCategorie')
+            ->join('voertuigInstructeurs', 'voertuigs.id', '=', 'voertuigInstructeurs.voertuigsId', 'left')
+            ->join('typeVoertuigs', 'voertuigs.typeVoertuigsId', '=', 'typeVoertuigs.id')
+            ->whereNull('voertuigInstructeurs.voertuigsId')
+            ->orderBy('voertuigs.id', 'asc')
+            ->get();
+
+        return view('instructeur.beschikbareVoertuigen', [
+            'instructeurs' => $instructeur,
+            'unassignedVehicles' => $unassignedVehicles
+        ]);
+    }
+
+    public function addVehicle(Instructeur $instructeur, Voertuig $voertuig)
+    {
+        $instructeurId = $instructeur->id;
+        $voertuigId = $voertuig->id;
+        $datumToekenning = date('y-m-d');
+        $createdAt = date('y-m-d h:i:s');
+        $updatedAt = date('y-m-d h:i:s');
+
+        $vehicleData = VoertuigInstructeur::insert(array(
+            'voertuigsId' => $voertuigId,
+            'instructeursId' => $instructeurId,
+            'datumToekenning' => $datumToekenning,
+            'created_at' => $createdAt,
+            'updated_at' => $updatedAt
+        ));
+
+        // Redirect to a success page or return a response
+        return redirect()->route('instructeur.gebruikteVoertuigen', ['instructeur' => $instructeur])
+            ->with('success', 'Voertuig succesvol toegevoegd.');
     }
 }
