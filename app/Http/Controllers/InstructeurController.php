@@ -148,7 +148,7 @@ class InstructeurController extends Controller
     }
 
     // Method to unassign the selected vehicle from the selected instructor
-    public function delete(Instructeur $instructeur, Voertuig $voertuig)
+    public function unassign(Instructeur $instructeur, Voertuig $voertuig)
     {
         // Check if the vehicle is assigned to the instructor
         $voertuigInstructeur = VoertuigInstructeur::where('instructeursId', $instructeur->id)
@@ -167,5 +167,30 @@ class InstructeurController extends Controller
             return redirect()->route('instructeur.gebruikteVoertuigen', ['instructeur' => $instructeur])
                 ->with('error', 'Error, dit voertuig is niet toegewezen aan de instructeur.');
         }
+    }
+
+    public function alleVoertuigen()
+    {
+        $voertuigGegevens = Voertuig::select('voertuigs.id', 'voertuigs.type', 'voertuigs.kenteken', 'voertuigs.bouwjaar', 'voertuigs.brandstof', 'typeVoertuigs.typeVoertuig', 'typeVoertuigs.rijbewijsCategorie', 'instructeurs.id as instructeursId', 'instructeurs.voornaam', 'instructeurs.tussenvoegsel', 'instructeurs.achternaam')
+            ->leftJoin('voertuigInstructeurs', 'voertuigs.id', '=', 'voertuigInstructeurs.voertuigsId')
+            ->leftJoin('instructeurs', 'voertuigInstructeurs.instructeursId', '=', 'instructeurs.id')
+            ->join('typeVoertuigs', 'voertuigs.typeVoertuigsId', '=', 'typeVoertuigs.id')
+            ->orderBy('voertuigs.bouwjaar', 'desc')
+            ->orderBy('instructeurs.achternaam', 'asc')
+            ->get();
+
+            
+
+        return view('instructeur.alleVoertuigen', ['voertuigGegevens' => $voertuigGegevens]);
+    }
+
+    public function delete(Voertuig $voertuig)
+    {
+        // Delete the vehicle
+        $voertuig->delete();
+
+        // Redirect back to the gebruikteVoertuigen page with a success message
+        return redirect()->route('instructeur.alleVoertuigen', ['voertuig' => $voertuig])
+            ->with('success', 'Voertuig is succesvol verwijderd.');
     }
 }

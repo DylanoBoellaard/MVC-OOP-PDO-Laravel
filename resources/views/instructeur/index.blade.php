@@ -11,6 +11,7 @@
     <div id="container">
         <h1>Instructeurs in dienst</h1>
         <p><span>Aantal instructeurs: </span>{{$aantalInstructeurs}}</p> <!-- Show total amount of instructors -->
+        <a href="{{route('instructeur.alleVoertuigen')}}">Alle voertuigen</a>
         <table>
             <thead>
                 <tr>

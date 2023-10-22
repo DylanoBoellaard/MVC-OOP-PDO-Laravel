@@ -37,5 +37,11 @@ Route::get('/instructeur/wijzigenVoertuigen/{instructeur}/{voertuigGegevens}', [
 // Page to actually allow updating the selected vehicle details
 Route::put('/instructeur/update/{instructeur}/{voertuig}', [InstructeurController::class, 'update'])->name('instructeur.update');
 
+// Page to actually allow unassigning the selected vehicle
+Route::get('/instructeur/unassign/{instructeur}/{voertuig}', [InstructeurController::class, 'unassign'])->name('instructeur.unassign');
+
+// Page to display all vehicles, assigned and unassigned
+Route::get('/instructeur/alleVoertuigen/', [InstructeurController::class, 'alleVoertuigen'])->name('instructeur.alleVoertuigen');
+
 // Page to actually allow deleting the selected vehicle
-Route::get('/instructeur/delete/{instructeur}/{voertuig}', [InstructeurController::class, 'delete'])->name('instructeur.delete');
+Route::get('/instructeur/delete/{voertuig}', [InstructeurController::class, 'delete'])->name('instructeur.delete');
