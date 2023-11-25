@@ -40,9 +40,9 @@ class InstructeurController extends Controller
             ->orderBy('typeVoertuigs.rijbewijsCategorie', 'asc')
             ->get();
 
-            $addedData = DB::table('voertuigInstructeurs')->select('voertuigsId',  DB::raw('count(instructeursId) as amount'))->groupBy('voertuigsId')->get();
+            $vehicleData = DB::table('voertuigInstructeurs')->select('voertuigsId',  DB::raw('count(instructeursId) as amount'))->groupBy('voertuigsId')->get();
 
-        return view('instructeur.gebruikteVoertuigen', ['instructeurs' => $instructeur, 'voertuigGegevens' => $voertuigGegevens, 'addedData' => $addedData]);
+        return view('instructeur.gebruikteVoertuigen', ['instructeurs' => $instructeur, 'voertuigGegevens' => $voertuigGegevens, 'vehicleData' => $vehicleData]);
     }
 
     // Method for showing selected vehicle editing page
