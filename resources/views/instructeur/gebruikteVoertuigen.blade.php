@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
 
     @vite(['resources/scss/instructeur/gebruikteVoertuigen.scss', 'resources/scss/instructeur/global.scss'])
 </head>
+
 <body>
     <div id="container">
         <h1>Door instructeur gebruikte voertuigen</h1>
@@ -42,6 +44,7 @@
                     <th>Rijbewijscategorie</th>
                     <th>Wijzigen</th>
                     <th>Verwijderen</th>
+                    <th>Toegewezen</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,10 +58,28 @@
                     <td>{{$voertuig->rijbewijsCategorie}}</td>
                     <td><a href="{{route('instructeur.wijzigenVoertuigen', [$instructeurs->id, $voertuig->id])}}"><img src="/img/Edit-icon.png" alt="wijzigenVoertuig.png"></a></td>
                     <td><a href="{{route('instructeur.unassign', [$instructeurs->id, $voertuig->id])}}"><img src="/img/Delete-icon.png" alt="verwijderVoertuig.png"></a></td>
+                    @foreach($vehicleData as $data)
+                        @if($data->voertuigsId == $voertuig->id)
+                            @if($data->amount > 1)
+                                <td>
+                                    <a href="{{route('instructeur.addtoElse', [$instructeurs->id, $voertuig->id])}}">
+                                        <img class="small-img" src="/img/RedCross.png" alt="Redcross.png">
+                                    </a>
+                                    <p>Cross</p>
+                                </td>
+                            @else
+                                <td>
+                                    <img class="small-img" src="/img/GreenCheckmark.png" alt="GreenCheckmark.png">
+                                    <p>Checkmark</p>
+                                </td>
+                            @endif
+                        @endif
                     @endforeach
                 </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
 </body>
+
 </html>

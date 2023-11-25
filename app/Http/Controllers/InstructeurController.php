@@ -40,7 +40,9 @@ class InstructeurController extends Controller
             ->orderBy('typeVoertuigs.rijbewijsCategorie', 'asc')
             ->get();
 
-        return view('instructeur.gebruikteVoertuigen', ['instructeurs' => $instructeur, 'voertuigGegevens' => $voertuigGegevens]);
+            $addedData = DB::table('voertuigInstructeurs')->select('voertuigsId',  DB::raw('count(instructeursId) as amount'))->groupBy('voertuigsId')->get();
+
+        return view('instructeur.gebruikteVoertuigen', ['instructeurs' => $instructeur, 'voertuigGegevens' => $voertuigGegevens, 'addedData' => $addedData]);
     }
 
     // Method for showing selected vehicle editing page
@@ -245,5 +247,20 @@ class InstructeurController extends Controller
             }
         }
         return redirect(route('instructeur.index'))->with('success', $instructeur->voornaam . ' is actief gemaakt');
+    }
+
+    // Function to add
+    public function addVehicleToSomeoneElse(Instructeur $instructeur, $voertuig)
+    {
+        $id = $instructeur->id;
+
+        $vehicleData = DB::table('voertuigInstructeurs')->select('voertuigsId', 'instructeursId')->where('instructeursId', '!=', $id)->get();
+        if ($vehicleData->isEmpty()) {
+        } else {
+            DB::table('voertuigInstructeurs')->select('voertuigsId', 'instructeursId')->where('instructeursId', '!=', $id)->where('voertuigsId', '=', $voertuig)->delete();
+            DB::table('savedVoertuigs')->select('voertuigsId', 'instructeursId')->where('instructeursId', '!=', $id)->where('voertuigsId', '=', $voertuig)->delete();
+
+            return redirect(route('instructeur.gebruikteVoertuigen', [$id]))->with('success', 'Het geselecteerde voertuig is weer toegewezen aan ' . $instructeur->voornaam);
+        }
     }
 }

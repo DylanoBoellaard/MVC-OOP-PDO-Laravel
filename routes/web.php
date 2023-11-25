@@ -51,3 +51,6 @@ Route::get('/instructeur/notActive/{instructeur}', [InstructeurController::class
 
 // Page for reassigning instructor
 Route::get('/instructeur/active/{instructeur}', [InstructeurController::class, 'active'])->name('instructeur.active');
+
+// Page to add vehicle to someone else
+Route::get('/instructeur/{instructeur}/{voertuig}/addtoElse', [InstructeurController::class, 'addVehicleToSomeoneElse'])->name('instructeur.addtoElse');
