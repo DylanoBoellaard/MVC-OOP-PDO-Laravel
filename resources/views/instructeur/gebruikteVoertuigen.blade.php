@@ -65,12 +65,10 @@
                                     <a href="{{route('instructeur.addtoElse', [$instructeurs->id, $voertuig->id])}}">
                                         <img class="small-img" src="/img/RedCross.png" alt="Redcross.png">
                                     </a>
-                                    <p>Cross</p>
                                 </td>
                             @else
                                 <td>
                                     <img class="small-img" src="/img/GreenCheckmark.png" alt="GreenCheckmark.png">
-                                    <p>Checkmark</p>
                                 </td>
                             @endif
                         @endif
