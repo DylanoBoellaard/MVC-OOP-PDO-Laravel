@@ -8,7 +8,6 @@
 
     @vite(['resources/scss/instructeur/alleVoertuigen.scss', 'resources/scss/instructeur/global.scss'])
 </head>
-
 <body>
     <div id="container">
         <h1>Alle voertuigen</h1>
@@ -49,7 +48,6 @@
         </script>
         @endif
 
-
         <!-- Check if $voertuigGegevens is not empty, if not empty > display table -->
         @if (isset($voertuigGegevens) && !$voertuigGegevens->isEmpty())
         <table>
@@ -87,5 +85,4 @@
         @endif
     </div>
 </body>
-
 </html>

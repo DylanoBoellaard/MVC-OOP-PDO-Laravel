@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class InstructeurController extends Controller
 {
+    // Show all instructors
     public function index()
     {
         $aantalInstructeurs = Instructeur::distinct()->count('id');
@@ -40,7 +41,7 @@ class InstructeurController extends Controller
             ->orderBy('typeVoertuigs.rijbewijsCategorie', 'asc')
             ->get();
 
-            $vehicleData = DB::table('voertuigInstructeurs')->select('voertuigsId',  DB::raw('count(instructeursId) as amount'))->groupBy('voertuigsId')->get();
+        $vehicleData = DB::table('voertuigInstructeurs')->select('voertuigsId',  DB::raw('count(instructeursId) as amount'))->groupBy('voertuigsId')->get();
 
         return view('instructeur.gebruikteVoertuigen', ['instructeurs' => $instructeur, 'voertuigGegevens' => $voertuigGegevens, 'vehicleData' => $vehicleData]);
     }
@@ -172,6 +173,7 @@ class InstructeurController extends Controller
         }
     }
 
+    // Method for showing all vehicles
     public function alleVoertuigen()
     {
         $voertuigGegevens = Voertuig::select('voertuigs.id', 'voertuigs.type', 'voertuigs.kenteken', 'voertuigs.bouwjaar', 'voertuigs.brandstof', 'typeVoertuigs.typeVoertuig', 'typeVoertuigs.rijbewijsCategorie', 'instructeurs.id as instructeursId', 'instructeurs.voornaam', 'instructeurs.tussenvoegsel', 'instructeurs.achternaam')
@@ -190,6 +192,7 @@ class InstructeurController extends Controller
         return view('instructeur.alleVoertuigen', ['voertuigGegevens' => $voertuigGegevens]);
     }
 
+    // Method for deleting vehicles
     public function delete(Voertuig $voertuig)
     {
         // Delete the vehicle
@@ -262,5 +265,26 @@ class InstructeurController extends Controller
 
             return redirect(route('instructeur.gebruikteVoertuigen', [$id]))->with('success', 'Het geselecteerde voertuig is weer toegewezen aan ' . $instructeur->voornaam);
         }
+    }
+
+    // Function to delete instructor WIP
+    public function deleteInstructor(Instructeur $instructeur)
+    {
+        $id = $instructeur->id;
+        $aantalInstructeurs = Instructeur::distinct()->count('id');
+
+        $instructeurList = DB::table('instructeurs')
+            ->select('id', 'voornaam', 'tussenvoegsel', 'achternaam', 'mobiel', 'datumInDienst', 'aantalSterren', 'isActief')
+            ->orderBy('aantalSterren', 'desc')
+            ->get();
+
+        // Detach cars associated with the instructor
+        VoertuigInstructeur::where('instructeursId', $id)->delete();
+
+        // Now, delete the instructor
+        $instructeur->delete();
+
+        return redirect()->route('instructeur.index', ['instructeurList' => $instructeurList, 'aantalInstructeurs' => $aantalInstructeurs])
+                ->with('success', 'Instructeur ' . `$instructeur->voornaam $instructeur->tussenvoegsel $instructeur->achternaam` . ' is definitief verwijdert en al zijn eerder toegewezen voertuigen zijn vrijgegeven.');
     }
 }

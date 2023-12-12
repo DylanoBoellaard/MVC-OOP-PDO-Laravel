@@ -54,3 +54,6 @@ Route::get('/instructeur/active/{instructeur}', [InstructeurController::class, '
 
 // Page to add vehicle to someone else
 Route::get('/instructeur/{instructeur}/{voertuig}/addtoElse', [InstructeurController::class, 'addVehicleToSomeoneElse'])->name('instructeur.addtoElse');
+
+// Page to delete instructor
+Route::delete('/instructeur/{instructeur}/deleteInstructor', [InstructeurController::class, 'deleteInstructor'])->name('instructeur.deleteInstructor');
