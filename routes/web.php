@@ -45,3 +45,12 @@ Route::get('/instructeur/alleVoertuigen/', [InstructeurController::class, 'alleV
 
 // Page to actually allow deleting the selected vehicle
 Route::get('/instructeur/delete/{voertuig}', [InstructeurController::class, 'delete'])->name('instructeur.delete');
+
+// Page for unassigning instructor
+Route::get('/instructeur/notActive/{instructeur}', [InstructeurController::class, 'notActive'])->name('instructeur.notActive');
+
+// Page for reassigning instructor
+Route::get('/instructeur/active/{instructeur}', [InstructeurController::class, 'active'])->name('instructeur.active');
+
+// Page to add vehicle to someone else
+Route::get('/instructeur/{instructeur}/{voertuig}/addtoElse', [InstructeurController::class, 'addVehicleToSomeoneElse'])->name('instructeur.addtoElse');

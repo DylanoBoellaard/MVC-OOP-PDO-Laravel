@@ -318,7 +318,82 @@ return new class extends Migration
             $table->engine = 'InnoDB';
         });
 
+        // Step: 08 - Fill a table voertuigInstructeurs
         DB::table('voertuigInstructeurs')->insert([
+            [
+                'voertuigsId' => 1,
+                'instructeursId' => 5,
+                'datumToekenning' => '2017-06-18',
+                'opmerkingen' => null,
+                'created_at' => now()->micro(6),
+                'updated_at' => now()->micro(6),
+            ],
+            [
+                'voertuigsId' => 3,
+                'instructeursId' => 1,
+                'datumToekenning' => '2021-09-26',
+                'opmerkingen' => null,
+                'created_at' => now()->micro(6),
+                'updated_at' => now()->micro(6),
+            ],
+            [
+                'voertuigsId' => 9,
+                'instructeursId' => 1,
+                'datumToekenning' => '2021-09-27',
+                'opmerkingen' => null,
+                'created_at' => now()->micro(6),
+                'updated_at' => now()->micro(6),
+            ],
+            [
+                'voertuigsId' => 4,
+                'instructeursId' => 4,
+                'datumToekenning' => '2022-08-01',
+                'opmerkingen' => null,
+                'created_at' => now()->micro(6),
+                'updated_at' => now()->micro(6),
+            ],
+            [
+                'voertuigsId' => 5,
+                'instructeursId' => 1,
+                'datumToekenning' => '2019-08-30',
+                'opmerkingen' => null,
+                'created_at' => now()->micro(6),
+                'updated_at' => now()->micro(6),
+            ],
+            [
+                'voertuigsId' => 10,
+                'instructeursId' => 5,
+                'datumToekenning' => '2020-02-02',
+                'opmerkingen' => null,
+                'created_at' => now()->micro(6),
+                'updated_at' => now()->micro(6),
+            ]
+        ]);
+
+        // Create new table savedVoertuigs
+        Schema::dropIfExists('savedVoertuigs');
+        Schema::create('savedVoertuigs', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('voertuigsId') // Declare foreign key
+                ->references('id')
+                ->on('voertuigs')
+                ->onDelete('cascade');
+
+            $table->foreignId('instructeursId') // Declare foreign key
+                ->references('id')
+                ->on('instructeurs')
+                ->onDelete('cascade'); // Cascade = if record in referenced table gets deleted, all related records in the current table will also be deleted
+            $table->date('datumToekenning')->default(now());
+            $table->date('datumAangemaakt')->default(now());
+            $table->date('datumGewijzigd')->default(now());
+            $table->boolean('isActief')->default(true);
+            $table->string('opmerkingen', 250)->nullable();
+            $table->timestamps(6);
+            $table->engine = 'InnoDB';
+        });
+
+        // Fill table savedVoertuigs
+        DB::table('savedVoertuigs')->insert([
             [
                 'voertuigsId' => 1,
                 'instructeursId' => 5,
