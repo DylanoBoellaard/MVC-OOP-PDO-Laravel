@@ -278,13 +278,18 @@ class InstructeurController extends Controller
             ->orderBy('aantalSterren', 'desc')
             ->get();
 
-        // Detach cars associated with the instructor
-        VoertuigInstructeur::where('instructeursId', $id)->delete();
+        if ($instructeur->isActief) {
+            // Detach cars associated with the instructor
+            VoertuigInstructeur::where('instructeursId', $id)->delete();
 
-        // Now, delete the instructor
-        $instructeur->delete();
+            // Now, delete the instructor
+            $instructeur->delete();
 
-        return redirect()->route('instructeur.index', ['instructeurList' => $instructeurList, 'aantalInstructeurs' => $aantalInstructeurs])
-                ->with('success', 'Instructeur ' . `$instructeur->voornaam $instructeur->tussenvoegsel $instructeur->achternaam` . ' is definitief verwijdert en al zijn eerder toegewezen voertuigen zijn vrijgegeven.');
+            return redirect()->route('instructeur.index', ['instructeurList' => $instructeurList, 'aantalInstructeurs' => $aantalInstructeurs])
+                ->with('success', $instructeur->voornaam . ' ' . $instructeur->tussenvoegsel . ' ' . $instructeur->achternaam . ' is definitief verwijdert en al zijn eerder toegewezen voertuigen zijn vrijgegeven.');
+        } else {
+            return redirect()->route('instructeur.index', ['instructeurList' => $instructeurList, 'aantalInstructeurs' => $aantalInstructeurs])
+                ->with('error', 'Error, ' . $instructeur->voornaam . ' ' . $instructeur->tussenvoegsel . ' ' . $instructeur->achternaam . ' kan niet definitief worden verwijderd, verander eerst de status ziekte/verlof');
+        }
     }
 }

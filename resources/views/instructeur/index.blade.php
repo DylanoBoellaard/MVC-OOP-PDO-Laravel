@@ -14,9 +14,9 @@
         <a href="{{route('instructeur.alleVoertuigen')}}">Alle voertuigen</a>
 
         <!-- If statement to display the success or error message -->
-        @if (session('success') || isset($error))
-        <div class="alert {{ isset($error) ? 'alert-error' : 'alert-success' }}">
-            {{ isset($error) ? $error : session('success') }} <span id="countdown">(3)</span>
+        @if (session('success') || session('error'))
+        <div class="alert {{ session('error') ? 'alert-error' : 'alert-success' }}">
+            {{ session('error') ? session('error') : session('success') }} (<span id="countdown">3</span>)
         </div>
         <script>
             let countdown = 3; // Set the initial countdown time (in seconds)
